@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+	require("dotenv").config()
+}
+
 var express = require("express"),
 	bodyParser = require("body-parser"),
 	passport = require("passport"),
@@ -10,8 +14,12 @@ var express = require("express"),
 
 //==================basic set-up starts==================//
 var app = express();
-mongoose.connect("mongodb://localhost:27017/todoProject", { useNewUrlParser: true });
-// mongoose.connect(process.env.DATABASEURL,{useNewUrlParser:true});
+// mongoose.connect("mongodb://localhost:27017/todoProject", { useNewUrlParser: true });
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/todoProject";
+mongoose.connect(dbUrl, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+});
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
